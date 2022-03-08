@@ -10,7 +10,7 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import "JsiBrigeEmitter.h"
+#import "JsiBridgeEmitter.h"
 
 #ifdef FB_SONARKIT_ENABLED
 #import <FlipperKit/FlipperClient.h>
@@ -50,13 +50,13 @@ static void InitializeFlipper(UIApplication *application) {
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   
-  [[JsiBrigeEmitter shared] on:@"jsData" with:^(NSString *data) {
+  [[JsiBridgeEmitter shared] on:@"jsData" with:^(NSString *data) {
     NSLog(@"😃jsD %@", data);
     
-    [[JsiBrigeEmitter shared] emit:@"onData" with:@"{\"s\": 2}"];
+    [[JsiBridgeEmitter shared] emit:@"onData" with:@"{\"s\": 2}"];
   }];
   
-  [[JsiBrigeEmitter shared] off:@""];
+  [[JsiBridgeEmitter shared] off:@""];
   
   return YES;
 }

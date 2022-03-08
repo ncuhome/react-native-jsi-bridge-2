@@ -11,9 +11,9 @@
 
 typedef void (^JsiBridgeCallback)(NSString *data);
 
-@interface JsiBrigeEmitter : NSObject
+@interface JsiBridgeEmitter : NSObject
 
-+ (id)shared;
++ (JsiBridgeEmitter*)shared;
 
 -(void)registerJsiBridge:(JsiBridge *)bridge;
 

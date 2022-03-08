@@ -6,18 +6,18 @@
 //  Copyright © 2022 Facebook. All rights reserved.
 //
 
-#import "JsiBrigeEmitter.h"
+#import "JsiBridgeEmitter.h"
 
 
-@implementation JsiBrigeEmitter
+@implementation JsiBridgeEmitter
 
 
 
 NSMutableDictionary<NSString*, JsiBridgeCallback> *_nativeListeners;
 __weak JsiBridge *jsiBridge;
 
-+ (id)shared {
-    static JsiBrigeEmitter *_shared = nil;
++ (JsiBridgeEmitter*)shared {
+    static JsiBridgeEmitter *_shared = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _shared = [[self alloc] init];

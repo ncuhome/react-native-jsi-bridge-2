@@ -2,7 +2,7 @@
 #import <React/RCTBridge+Private.h>
 #import <ReactCommon/RCTTurboModule.h>
 #import <jsi/jsi.h>
-#import "JsiBrigeEmitter.mm"
+#import "JsiBridgeEmitter.mm"
 
 #include "iostream"
 #include "map"
@@ -32,7 +32,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
     if (_runtime == nil) return @false;
     auto& runtime = *_runtime;
     
-    [JsiBrigeEmitter.shared registerJsiBridge:self];
+    [JsiBridgeEmitter.shared registerJsiBridge:self];
     
     
     auto registerCallback = jsi::Function::createFromHostFunction(runtime,
@@ -78,7 +78,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
         auto nameString = [NSString stringWithUTF8String:name.c_str()];
         auto dataString = [NSString stringWithUTF8String:data.c_str()];
         
-        [JsiBrigeEmitter.shared emitNative:nameString with:dataString];
+        [JsiBridgeEmitter.shared emitNative:nameString with:dataString];
         return jsi::Value::undefined();
     });
     
