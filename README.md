@@ -1,6 +1,6 @@
 # react-native-jsi-bridge
 
-Kl
+React Native JSI library for communicate between js and native code via jsi.
 
 ## Installation
 
