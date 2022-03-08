@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-
-		5E555C0D2413F4C50049A1A2 /* JsiBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* JsiBridge.m */; };
-
+		921B861127D7C6FD00AC692E /* _JsiBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* _JsiBridge.mm */; };
+		921B861327D7C99400AC692E /* JsiBrigeEmitter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 921B861227D7C99400AC692E /* JsiBrigeEmitter.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,10 +25,10 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libJsiBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libJsiBridge.a; sourceTree = BUILT_PRODUCTS_DIR; };
-
-		B3E7B5881CC2AC0600A0062D /* JsiBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsiBridge.h; sourceTree = "<group>"; };
-		B3E7B5891CC2AC0600A0062D /* JsiBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JsiBridge.m; sourceTree = "<group>"; };
-
+		921B861227D7C99400AC692E /* JsiBrigeEmitter.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = JsiBrigeEmitter.mm; sourceTree = "<group>"; };
+		921B861427D7C9FE00AC692E /* JsiBrigeEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JsiBrigeEmitter.h; sourceTree = "<group>"; };
+		B3E7B5881CC2AC0600A0062D /* _JsiBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _JsiBridge.h; sourceTree = "<group>"; };
+		B3E7B5891CC2AC0600A0062D /* _JsiBridge.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = _JsiBridge.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,10 +53,10 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-
-				B3E7B5881CC2AC0600A0062D /* JsiBridge.h */,
-				B3E7B5891CC2AC0600A0062D /* JsiBridge.m */,
-
+				921B861427D7C9FE00AC692E /* JsiBrigeEmitter.h */,
+				921B861227D7C99400AC692E /* JsiBrigeEmitter.mm */,
+				B3E7B5881CC2AC0600A0062D /* _JsiBridge.h */,
+				B3E7B5891CC2AC0600A0062D /* _JsiBridge.mm */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -119,9 +118,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-
-				B3E7B58A1CC2AC0600A0062D /* JsiBridge.m in Sources */,
-
+				921B861127D7C6FD00AC692E /* _JsiBridge.mm in Sources */,
+				921B861327D7C99400AC692E /* JsiBrigeEmitter.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,7 +232,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = JsiBridge;
 				SKIP_INSTALL = YES;
-
 			};
 			name = Debug;
 		};
@@ -251,7 +248,6 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = JsiBridge;
 				SKIP_INSTALL = YES;
-
 			};
 			name = Release;
 		};
