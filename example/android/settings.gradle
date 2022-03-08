@@ -1,0 +1,6 @@
+rootProject.name = 'JsiBridgeExample'
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+include ':app'
+
+include ':reactnativejsibridge'
+project(':reactnativejsibridge').projectDir = new File(rootProject.projectDir, '../../android')
