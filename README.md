@@ -6,7 +6,7 @@ React Native JSI library for communicate between js and native code via jsi skip
 
 ```sh
 #add to package.json
-"react-native-jsi-bridge":"sergeymild/react-native-jsi-bridge#0.5.0"
+"react-native-jsi-bridge":"sergeymild/react-native-jsi-bridge#0.5.1"
 # after that make yarn install
 # and npx pod-install
 ```
