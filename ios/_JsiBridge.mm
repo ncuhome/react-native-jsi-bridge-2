@@ -9,16 +9,18 @@
 
 using namespace facebook;
 
-jsi::Value convertNSStringToJSIString(jsi::Runtime &runtime, NSString *value)
-{
-  return jsi::String::createFromUtf8(runtime, [value UTF8String] ?: "");
+namespace jsBridge {
+    jsi::Value convertNSStringToJSIString(jsi::Runtime &runtime, NSString *value)
+    {
+      return jsi::String::createFromUtf8(runtime, [value UTF8String] ?: "");
+    }
 }
 
 @implementation JsiBridge
 
 RCT_EXPORT_MODULE()
 
-std::map<std::string, std::shared_ptr<facebook::jsi::Function>> callbacks;
+std::map<std::string, std::shared_ptr<facebook::jsi::Function>> jsListeners_;
 RCTCxxBridge *_cxxBridge;
 RCTBridge *_bridge;
 jsi::Runtime *_runtime;
@@ -46,7 +48,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
         auto name = args[0].asString(runtime).utf8(runtime);
         std::cout<<"😀addCallback " + name << std::endl;
         auto callback = args[1].asObject(runtime).asFunction(runtime);
-        callbacks[name] = std::make_shared<jsi::Function>(std::move(callback));
+        jsListeners_[name] = std::make_shared<jsi::Function>(std::move(callback));
         return jsi::Value::undefined();
     });
     
@@ -60,7 +62,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
         
         auto name = args[0].asString(runtime).utf8(runtime);
         std::cout<<"😀removecallback " + name << std::endl;
-        callbacks.erase(name);
+        jsListeners_.erase(name);
         return jsi::Value::undefined();
     });
     
@@ -95,11 +97,11 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
 - (void)emitJs:(NSString *)name with:(NSString *)data {
     
     auto stdName = [name UTF8String];
-    if (callbacks.find(stdName) != callbacks.end()) {
+    if (jsListeners_.find(stdName) != jsListeners_.end()) {
             auto& runtime = *_runtime;
             _bridge.jsCallInvoker->invokeAsync([&runtime, n = stdName, d = data] () {
-                auto dd = convertNSStringToJSIString(runtime, d);
-                callbacks[n]->call(runtime, dd);
+                auto dd = jsBridge::convertNSStringToJSIString(runtime, d);
+                jsListeners_[n]->call(runtime, dd);
             });
         }
 }

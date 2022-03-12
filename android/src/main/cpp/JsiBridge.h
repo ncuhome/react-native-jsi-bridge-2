@@ -26,7 +26,7 @@ private:
     facebook::jni::global_ref<JsiBridge::javaobject> javaPart_;
     facebook::jsi::Runtime *runtime_;
     std::shared_ptr<facebook::react::CallInvoker> jsCallInvoker_;
-    std::map<std::string, std::shared_ptr<facebook::jsi::Function>> webSocketCallbacks_;
+    std::map<std::string, std::shared_ptr<facebook::jsi::Function>> jsListeners_;
     explicit JsiBridge(
             facebook::jni::alias_ref<JsiBridge::jhybridobject> jThis,
             facebook::jsi::Runtime *rt,

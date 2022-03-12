@@ -57,10 +57,9 @@ void JsiBridge::emitJs(jstring name, jstring data) {
     auto stdName = jni::make_local(name)->toStdString();
     auto stdData = jni::make_local(data)->toStdString();
 
-    if (webSocketCallbacks_.find(stdName) != webSocketCallbacks_.end()) {
+    if (jsListeners_.find(stdName) != jsListeners_.end()) {
         jsCallInvoker_->invokeAsync([=, d = stdData]() {
-            webSocketCallbacks_[stdName]->call(*runtime_,
-                                                   jsi::String::createFromUtf8(*runtime_, d));
+            jsListeners_[stdName]->call(*runtime_,jsi::String::createFromUtf8(*runtime_, d));
         });
     }
 }
@@ -83,7 +82,7 @@ void JsiBridge::installJSIBindings() {
                 __android_log_print(ANDROID_LOG_VERBOSE, "😇", "registerCallback %s", name.c_str());
 
                 auto callback = args[1].asObject(runtime).asFunction(runtime);
-                webSocketCallbacks_[name] = std::make_shared<jsi::Function>(std::move(callback));
+                jsListeners_[name] = std::make_shared<jsi::Function>(std::move(callback));
                 return jsi::Value::undefined();
             });
 
@@ -100,7 +99,7 @@ void JsiBridge::installJSIBindings() {
 
                 __android_log_print(ANDROID_LOG_VERBOSE, "😇", "removeCallback %s", name.c_str());
 
-                webSocketCallbacks_.erase(name);
+                jsListeners_.erase(name);
                 return jsi::Value::undefined();
             });
 

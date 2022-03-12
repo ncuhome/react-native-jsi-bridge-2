@@ -1,6 +1,6 @@
 # react-native-jsi-bridge
 
-React Native JSI library for communicate between js and native code via jsi skipping the react-native bridge.
+React Native JSI library for communicate between js and native code via jsi skipping the react-native bridge which improve performance and skips data serialization/deserialization.
 
 ## Installation
 
