@@ -54,18 +54,18 @@ JsiBridge.emit('eventNameInJsCode', someObjectSerializedToString)
 
 On native side
 ```
-#import "JsiBrigeEmitter.h"
+#import "JsiBridgeEmitter.h"
 
 // for subscribe
-[[JsiBrigeEmitter shared] on:@"eventNameInNativeCode" with:^(NSString *data) {
+[[JsiBridgeEmitter shared] on:@"eventNameInNativeCode" with:^(NSString *data) {
   // some logic
 }];
 
 // for unsubscribe
-[[JsiBrigeEmitter shared] off:@"eventNameInNativeCode"];
+[[JsiBridgeEmitter shared] off:@"eventNameInNativeCode"];
 
 // send event to js code
-[[JsiBrigeEmitter shared] emit:@"eventNameInJsCode" with:@"someObjectSerializedToString"];
+[[JsiBridgeEmitter shared] emit:@"eventNameInJsCode" with:@"someObjectSerializedToString"];
 ```
 
 ## Contributing
