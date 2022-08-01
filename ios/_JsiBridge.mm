@@ -21,18 +21,18 @@ namespace jsBridge {
 RCT_EXPORT_MODULE()
 
 std::map<std::string, std::shared_ptr<facebook::jsi::Function>> jsListeners_;
-RCTCxxBridge *_cxxBridge;
-RCTBridge *_bridge;
-jsi::Runtime *_runtime;
+RCTCxxBridge *jsBridge_cxxBridge;
+RCTBridge *jsBridge_bridge;
+jsi::Runtime *jsBridge_runtime;
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
     NSLog(@"Installing JsiBridge polyfill Bindings...");
-    _bridge = [RCTBridge currentBridge];
-    _cxxBridge = (RCTCxxBridge*)_bridge;
-    if (_cxxBridge == nil) return @false;
-    _runtime = (jsi::Runtime*) _cxxBridge.runtime;
-    if (_runtime == nil) return @false;
-    auto& runtime = *_runtime;
+    jsBridge_bridge = [RCTBridge currentBridge];
+    jsBridge_cxxBridge = (RCTCxxBridge*)jsBridge_bridge;
+    if (jsBridge_cxxBridge == nil) return @false;
+    jsBridge_runtime = (jsi::Runtime*) jsBridge_cxxBridge.runtime;
+    if (jsBridge_runtime == nil) return @false;
+    auto& runtime = *jsBridge_runtime;
     
     [JsiBridgeEmitter.shared registerJsiBridge:self];
     
@@ -98,8 +98,8 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
     
     auto stdName = [name UTF8String];
     if (jsListeners_.find(stdName) != jsListeners_.end()) {
-            auto& runtime = *_runtime;
-            _bridge.jsCallInvoker->invokeAsync([&runtime, n = stdName, d = data] () {
+            auto& runtime = *jsBridge_runtime;
+            jsBridge_bridge.jsCallInvoker->invokeAsync([&runtime, n = stdName, d = data] () {
                 auto dd = jsBridge::convertNSStringToJSIString(runtime, d);
                 jsListeners_[n]->call(runtime, dd);
             });
