@@ -2,9 +2,8 @@
   "name": "react-native-jsi-bridge",
   "version": "0.5.1",
   "description": "React Native JSI library for communicate between js and native code via jsi",
-  "main": "lib/commonjs/index",
-  "module": "lib/module/index",
-  "types": "lib/typescript/index.d.ts",
+  "main": "src/index",
+  "module": "src/index",
   "react-native": "src/index",
   "source": "src/index",
   "files": [
