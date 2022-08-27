@@ -44,10 +44,18 @@ __weak JsiBridge *jsiBridge;
 }
 
 - (void)emitNative:(NSString *)name with:(id)data {
-    NSLog(@"%@", data[@"xjp"]);
     dispatch_async(dispatch_get_main_queue(), ^{
         JsiBridgeCallback listener = [_nativeListeners objectForKey:name];
-        if (listener) listener(data);
+        if (listener) {
+            @try {
+                listener(data);
+            }
+            @catch (id err) {
+                // 主要防止由于 js 层传入的参数类型与在 oc 中注册的不同，而导致的 crash
+                NSString *str = [NSString stringWithFormat:@"[%@]: 此事件调用失败", name];
+                NSLog(@"%@", str);
+            }
+        };
     });
 }
 

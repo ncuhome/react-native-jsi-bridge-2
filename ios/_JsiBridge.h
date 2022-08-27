@@ -3,5 +3,6 @@
 
 @interface JsiBridge : NSObject <RCTBridgeModule>
 
--(void)emitJs:(NSString *)name with:(NSString*)data;
+- (void)emitJs:(NSString *)name with:(id)data;
+
 @end

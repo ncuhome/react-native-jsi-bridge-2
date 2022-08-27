@@ -24,7 +24,11 @@ export default function App() {
       <TouchableOpacity
         onPress={() => JsiBridge.emit('jsData', { user: 'sxy' })}
       >
-        <Text>Send event</Text>
+        <Text>Send event with Object</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => JsiBridge.emit('jsData', 'sxy')}>
+        <Text>Send event with String</Text>
       </TouchableOpacity>
     </View>
   );

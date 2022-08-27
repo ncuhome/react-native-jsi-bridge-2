@@ -40,7 +40,9 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
                                                                       size_t count) -> jsi::Value {
         
         auto name = args[0].asString(runtime).utf8(runtime);
-        std::cout<<"😀addCallback " + name << std::endl;
+#if DEBUG
+        std::cout<<"😀 addCallback " + name << std::endl;
+#endif
         auto callback = args[1].asObject(runtime).asFunction(runtime);
         jsListeners_[name] = std::make_shared<jsi::Function>(std::move(callback));
         return jsi::Value::undefined();
@@ -55,7 +57,9 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
                                                                     size_t count) -> jsi::Value {
         
         auto name = args[0].asString(runtime).utf8(runtime);
-        std::cout<<"😀removecallback " + name << std::endl;
+#if DEBUG
+        std::cout<<"😀 removecallback " + name << std::endl;
+#endif
         jsListeners_.erase(name);
         return jsi::Value::undefined();
     });
@@ -82,6 +86,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
     _jsiBridge.setProperty(runtime, "registerCallback", std::move(registerCallback));
     _jsiBridge.setProperty(runtime, "removeCallback", std::move(removeCallback));
     _jsiBridge.setProperty(runtime, "emit", std::move(emit));
+    _jsiBridge.setProperty(runtime, "js", std::move(emit));
     runtime.global().setProperty(runtime, "_JsiBridge", std::move(_jsiBridge));
     
     return @true;
@@ -93,7 +98,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
         auto& runtime = *jsBridge_runtime;
         jsBridge_bridge.jsCallInvoker->invokeAsync([&runtime, n = stdName, d = data] () {
             auto dd = convertObjCObjectToJSIValue(runtime, d);
-            jsListeners_[n]->call(runtime, dd);
+            jsListeners_[n]->call(runtime, std::move(dd));
         });
     }
 }
