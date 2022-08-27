@@ -30,7 +30,7 @@ JsiBridge.off('eventNameInJsCode')
 For send event to native code
 ```typescript
 // send event to native code
-JsiBridge.emit('eventNameInNativeCode', {user: "withNamr"})
+JsiBridge.emit('eventNameInNativeCode', { user: "your name" })
 ```
 
 ## Usage Native Java
@@ -39,7 +39,7 @@ On native side (Java/Kotlin)
 ```java
 
 // for subscribe
-JsiBridge.on('eventNameInNativeCode', someObjectSerializedToString -> {
+JsiBridge.on('eventNameInNativeCode', data -> {
 
 })
 
@@ -47,7 +47,7 @@ JsiBridge.on('eventNameInNativeCode', someObjectSerializedToString -> {
 JsiBridge.off('eventNameInNativeCode')
 
 // send event to js code
-JsiBridge.emit('eventNameInJsCode', someObjectSerializedToString)
+JsiBridge.emit('eventNameInJsCode', data)
 ```
 
 ## Usage Native Objective-c
@@ -65,12 +65,8 @@ On native side
 [[JsiBridgeEmitter shared] off:@"eventNameInNativeCode"];
 
 // send event to js code
-[[JsiBridgeEmitter shared] emit:@"eventNameInJsCode" with:@"someObjectSerializedToString"];
+[[JsiBridgeEmitter shared] emit:@"eventNameInJsCode" with:@"data"];
 ```
-
-## Contributing
-
-See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
 ## License
 
