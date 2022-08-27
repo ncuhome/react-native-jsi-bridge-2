@@ -20,7 +20,7 @@ const _JsiBridge = NativeModules.JsiBridge
 _JsiBridge.install();
 
 export class JsiBridge {
-  static on(name: string, callback: (data: string) => void) {
+  static on(name: string, callback: (data: any) => void) {
     //@ts-ignore
     global._JsiBridge.registerCallback(name, callback);
   }
@@ -30,7 +30,7 @@ export class JsiBridge {
     global._JsiBridge.removeCallback(name);
   }
 
-  static emit(name: string, data: string) {
+  static emit(name: string, data: any) {
     //@ts-ignore
     global._JsiBridge.emit(name, data);
   }

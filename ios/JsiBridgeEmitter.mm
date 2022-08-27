@@ -44,6 +44,7 @@ __weak JsiBridge *jsiBridge;
 }
 
 - (void)emitNative:(NSString *)name with:(id)data {
+    NSLog(@"%@", data[@"xjp"]);
     dispatch_async(dispatch_get_main_queue(), ^{
         JsiBridgeCallback listener = [_nativeListeners objectForKey:name];
         if (listener) listener(data);

@@ -14,19 +14,23 @@
 using namespace facebook;
 using namespace facebook::react;
 
-#pragma mark - RCTBlockGuard
+typedef void(^PureBlockType)(void);
 
-@interface RCTBlockGuard : NSObject
+#pragma mark - JsiBridgeBlockGuard
 
-- (instancetype)initWithCleanup:(void (^)(void))cleanup;
+@interface JsiBridgeBlockGuard : NSObject
+
+@property (nonatomic) PureBlockType cleanup;
+
+- (id)initWithCleanup:(PureBlockType)cleanup;
 
 @end
 
-@implementation RCTBlockGuard {
+@implementation JsiBridgeBlockGuard {
     void (^_cleanup)(void);
 }
 
-- (instancetype)initWithCleanup:(void (^)(void))cleanup
+- (id)initWithCleanup:(void (^)(void))cleanup
 {
     if (self = [super init]) {
         _cleanup = cleanup;
@@ -203,7 +207,7 @@ static RCTResponseSenderBlock convertJSIFunctionToCallback(
     auto weakWrapper = retainJSCallback != nil
     ? retainJSCallback(value.getFunction(runtime), runtime, jsInvoker)
     : CallbackWrapper::createWeak(value.getFunction(runtime), runtime, jsInvoker);
-    RCTBlockGuard *blockGuard = [[RCTBlockGuard alloc] initWithCleanup:^() {
+    JsiBridgeBlockGuard *blockGuard = [[JsiBridgeBlockGuard alloc] initWithCleanup:^() {
         auto strongWrapper = weakWrapper.lock();
         if (strongWrapper) {
             strongWrapper->destroy();
