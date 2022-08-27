@@ -6,7 +6,7 @@ React Native JSI library for communicate between js and native code via jsi skip
 
 ```sh
 #add to package.json
-"react-native-jsi-bridge":"sergeymild/react-native-jsi-bridge#0.5.1"
+"react-native-jsi-bridge":"ncuhome/react-native-jsi-bridge#master"
 # after that make yarn install
 # and npx pod-install
 ```
@@ -19,7 +19,7 @@ and subscribe on events which will be fired from native code.
 import { JsiBridge } from 'react-native-jsi-bridge';
 
 // for subscribe
-JsiBridge.on('eventNameInJsCode', (data: string) => {
+JsiBridge.on('eventNameInJsCode', (data: any) => {
 
 })
 
@@ -30,7 +30,7 @@ JsiBridge.off('eventNameInJsCode')
 For send event to native code
 ```typescript
 // send event to native code
-JsiBridge.emit('eventNameInNativeCode', JSON.stringify({user: "withNamr"}))
+JsiBridge.emit('eventNameInNativeCode', {user: "withNamr"})
 ```
 
 ## Usage Native Java
@@ -57,7 +57,7 @@ On native side
 #import "JsiBridgeEmitter.h"
 
 // for subscribe
-[[JsiBridgeEmitter shared] on:@"eventNameInNativeCode" with:^(NSString *data) {
+[[JsiBridgeEmitter shared] on:@"eventNameInNativeCode" with:^(id data) {
   // some logic
 }];
 

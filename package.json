@@ -1,6 +1,6 @@
 {
   "name": "react-native-jsi-bridge",
-  "version": "0.5.1",
+  "version": "0.6.1",
   "description": "React Native JSI library for communicate between js and native code via jsi",
   "main": "src/index",
   "module": "src/index",
@@ -33,13 +33,13 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/sergeymild/react-native-jsi-bridge",
-  "author": "sergeymild <sergeymild@yandex.ru> (https://github.com/sergeymild)",
+  "repository": "https://github.com/ncuhome/react-native-jsi-bridge",
+  "author": "ncuhome <develop@ncuhome.club> (https://github.com/ncuhome)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sergeymild/react-native-jsi-bridge/issues"
+    "url": "https://github.com/ncuhome/react-native-jsi-bridge/issues"
   },
-  "homepage": "https://github.com/sergeymild/react-native-jsi-bridge#readme",
+  "homepage": "https://github.com/ncuhome/react-native-jsi-bridge#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

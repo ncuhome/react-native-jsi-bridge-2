@@ -9,20 +9,22 @@
 #import <Foundation/Foundation.h>
 #import "_JsiBridge.h"
 
-typedef void (^JsiBridgeCallback)(NSString *data);
+typedef void (^JsiBridgeCallback)(id data);
 
 @interface JsiBridgeEmitter : NSObject
 
 + (JsiBridgeEmitter*)shared;
 
--(void)registerJsiBridge:(JsiBridge *)bridge;
+- (void)registerJsiBridge:(JsiBridge *)bridge;
 
--(void)on:(NSString *)name
-     with:(JsiBridgeCallback)callback;
+- (void)on:(NSString *)name
+      with:(JsiBridgeCallback)callback;
 
--(void)off:(NSString *)name;
+- (void)off:(NSString *)name;
 
--(void)emit:(NSString *)name
-        with:(NSString *)data;
+- (void)emit:(NSString *)name
+        with:(id)data;
+
+- (void)emitNative:(NSString *)name with:(id)data;
 
 @end

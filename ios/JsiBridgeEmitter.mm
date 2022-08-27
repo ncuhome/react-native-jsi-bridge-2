@@ -8,10 +8,7 @@
 
 #import "JsiBridgeEmitter.h"
 
-
 @implementation JsiBridgeEmitter
-
-
 
 NSMutableDictionary<NSString*, JsiBridgeCallback> *_nativeListeners;
 __weak JsiBridge *jsiBridge;
@@ -26,10 +23,10 @@ __weak JsiBridge *jsiBridge;
 }
 
 - (id)init {
-  if (self = [super init]) {
-      _nativeListeners = [[NSMutableDictionary alloc] init];
-  }
-  return self;
+    if (self = [super init]) {
+        _nativeListeners = [[NSMutableDictionary alloc] init];
+    }
+    return self;
 }
 
 - (void)on:(NSString *)name with:(JsiBridgeCallback)callback {
@@ -40,11 +37,13 @@ __weak JsiBridge *jsiBridge;
     [_nativeListeners removeObjectForKey:name];
 }
 
-- (void)emit:(NSString *)name with:(NSString *)data {
-    [jsiBridge emitJs:name with:data];
+- (void)emit:(NSString *)name with:(id)data {
+    if (jsiBridge) {
+        [jsiBridge emitJs:name with:data];
+    }
 }
 
--(void)emitNative:(NSString *)name with:(NSString *) data {
+- (void)emitNative:(NSString *)name with:(id)data {
     dispatch_async(dispatch_get_main_queue(), ^{
         JsiBridgeCallback listener = [_nativeListeners objectForKey:name];
         if (listener) listener(data);

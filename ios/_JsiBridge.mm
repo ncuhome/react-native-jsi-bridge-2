@@ -3,23 +3,18 @@
 #import <ReactCommon/RCTTurboModule.h>
 #import <jsi/jsi.h>
 #import "JsiBridgeEmitter.mm"
+#import "JsiUtils.h"
 
 #include "iostream"
 #include "map"
 
 using namespace facebook;
 
-namespace jsBridge {
-    jsi::Value convertNSStringToJSIString(jsi::Runtime &runtime, NSString *value)
-    {
-      return jsi::String::createFromUtf8(runtime, [value UTF8String] ?: "");
-    }
-}
-
 @implementation JsiBridge
 
 RCT_EXPORT_MODULE()
 
+// js registed events store
 std::map<std::string, std::shared_ptr<facebook::jsi::Function>> jsListeners_;
 RCTCxxBridge *jsBridge_cxxBridge;
 RCTBridge *jsBridge_bridge;
@@ -36,14 +31,13 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
     
     [JsiBridgeEmitter.shared registerJsiBridge:self];
     
-    
     auto registerCallback = jsi::Function::createFromHostFunction(runtime,
                                                                   jsi::PropNameID::forUtf8(runtime, "registerCallback"),
                                                                   2,
-                                                                  [](jsi::Runtime& runtime,
-                                                                     const jsi::Value& thisArg,
-                                                                     const jsi::Value* args,
-                                                                     size_t count) -> jsi::Value {
+                                                                  [&](jsi::Runtime& runtime,
+                                                                      const jsi::Value& thisArg,
+                                                                      const jsi::Value* args,
+                                                                      size_t count) -> jsi::Value {
         
         auto name = args[0].asString(runtime).utf8(runtime);
         std::cout<<"😀addCallback " + name << std::endl;
@@ -55,10 +49,10 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
     auto removeCallback = jsi::Function::createFromHostFunction(runtime,
                                                                 jsi::PropNameID::forUtf8(runtime, "removeCallback"),
                                                                 1,
-                                                                [](jsi::Runtime& runtime,
-                                                                   const jsi::Value& thisArg,
-                                                                   const jsi::Value* args,
-                                                                   size_t count) -> jsi::Value {
+                                                                [&](jsi::Runtime& runtime,
+                                                                    const jsi::Value& thisArg,
+                                                                    const jsi::Value* args,
+                                                                    size_t count) -> jsi::Value {
         
         auto name = args[0].asString(runtime).utf8(runtime);
         std::cout<<"😀removecallback " + name << std::endl;
@@ -75,12 +69,11 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
                                                           size_t count) -> jsi::Value {
         
         auto name = args[0].asString(runtime).utf8(runtime);
-        auto data = args[1].asString(runtime).utf8(runtime);
+        id data = convertJSIValueToObjCObject(runtime, args[1], jsBridge_bridge.jsCallInvoker, nil);
         
         auto nameString = [NSString stringWithUTF8String:name.c_str()];
-        auto dataString = [NSString stringWithUTF8String:data.c_str()];
         
-        [JsiBridgeEmitter.shared emitNative:nameString with:dataString];
+        [JsiBridgeEmitter.shared emitNative:nameString with:data];
         return jsi::Value::undefined();
     });
     
@@ -94,16 +87,15 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
     return @true;
 }
 
-- (void)emitJs:(NSString *)name with:(NSString *)data {
-    
+- (void)emitJs:(NSString *)name with:(id)data {
     auto stdName = [name UTF8String];
     if (jsListeners_.find(stdName) != jsListeners_.end()) {
-            auto& runtime = *jsBridge_runtime;
-            jsBridge_bridge.jsCallInvoker->invokeAsync([&runtime, n = stdName, d = data] () {
-                auto dd = jsBridge::convertNSStringToJSIString(runtime, d);
-                jsListeners_[n]->call(runtime, dd);
-            });
-        }
+        auto& runtime = *jsBridge_runtime;
+        jsBridge_bridge.jsCallInvoker->invokeAsync([&runtime, n = stdName, d = data] () {
+            auto dd = convertObjCObjectToJSIValue(runtime, d);
+            jsListeners_[n]->call(runtime, dd);
+        });
+    }
 }
 
 @end

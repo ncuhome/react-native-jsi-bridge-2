@@ -25,6 +25,7 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libJsiBridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libJsiBridge.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		586B9E3728BA26F90065EFF1 /* JsiUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JsiUtils.h; sourceTree = "<group>"; };
 		921B861227D7C99400AC692E /* JsiBridgeEmitter.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = JsiBridgeEmitter.mm; sourceTree = "<group>"; };
 		921B861427D7C9FE00AC692E /* JsiBridgeEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JsiBridgeEmitter.h; sourceTree = "<group>"; };
 		B3E7B5881CC2AC0600A0062D /* _JsiBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _JsiBridge.h; sourceTree = "<group>"; };
@@ -57,6 +58,7 @@
 				921B861227D7C99400AC692E /* JsiBridgeEmitter.mm */,
 				B3E7B5881CC2AC0600A0062D /* _JsiBridge.h */,
 				B3E7B5891CC2AC0600A0062D /* _JsiBridge.mm */,
+				586B9E3728BA26F90065EFF1 /* JsiUtils.h */,
 				134814211AA4EA7D00B7C361 /* Products */,
 			);
 			sourceTree = "<group>";
