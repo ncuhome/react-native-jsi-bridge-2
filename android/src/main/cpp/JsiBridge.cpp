@@ -20,7 +20,7 @@ JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *) {
 
 // JNI binding
 void JsiBridge::registerNatives() {
-    __android_log_print(ANDROID_LOG_VERBOSE, "😇", "registerNatives");
+    __android_log_print(ANDROID_LOG_DEBUG, "😇", "registerNatives");
     registerHybrid({
                            makeNativeMethod("initHybrid",
                                             JsiBridge::initHybrid),
@@ -54,13 +54,13 @@ TSelf JsiBridge::initHybrid(
         jni::alias_ref<facebook::react::CallInvokerHolder::javaobject>
         jsCallInvokerHolder) {
 
-    __android_log_write(ANDROID_LOG_INFO, "🥲", "initHybrid...");
+    __android_log_write(ANDROID_LOG_DEBUG, "🥲", "initHybrid...");
     auto jsCallInvoker = jsCallInvokerHolder->cthis()->getCallInvoker();
     return makeCxxInstance(jThis, (jsi::Runtime *) jsContext, jsCallInvoker);
 }
 
 void JsiBridge::emitJsStr(jstring name, jstring data) {
-    __android_log_print(ANDROID_LOG_VERBOSE, "😇", "emit");
+    __android_log_print(ANDROID_LOG_DEBUG, "😇", "emit");
 
     auto stdName = jni::make_local(name)->toStdString();
 
@@ -73,7 +73,7 @@ void JsiBridge::emitJsStr(jstring name, jstring data) {
 }
 
 void JsiBridge::emitJsBool(jstring name, jboolean data) {
-    __android_log_print(ANDROID_LOG_VERBOSE, "😇", "emit");
+    __android_log_print(ANDROID_LOG_DEBUG, "😇", "emit");
 
     auto stdName = jni::make_local(name)->toStdString();
 
@@ -85,7 +85,7 @@ void JsiBridge::emitJsBool(jstring name, jboolean data) {
 }
 
 void JsiBridge::emitJsNum(jstring name, jdouble data) {
-    __android_log_print(ANDROID_LOG_VERBOSE, "😇", "emit");
+    __android_log_print(ANDROID_LOG_DEBUG, "😇", "emit");
 
     auto stdName = jni::make_local(name)->toStdString();
 
@@ -97,7 +97,7 @@ void JsiBridge::emitJsNum(jstring name, jdouble data) {
 }
 
 void JsiBridge::emitJsObj(jstring name, jobject data, jboolean isArray) {
-    __android_log_print(ANDROID_LOG_VERBOSE, "😇", "emit");
+    __android_log_print(ANDROID_LOG_DEBUG, "😇", "emit");
 
     auto stdName = jni::make_local(name)->toStdString();
 
@@ -124,7 +124,7 @@ void JsiBridge::emitJsObj(jstring name, jobject data, jboolean isArray) {
 }
 
 void JsiBridge::emitJsNull(jstring name) {
-    __android_log_print(ANDROID_LOG_VERBOSE, "😇", "emit");
+    __android_log_print(ANDROID_LOG_DEBUG, "😇", "emit");
 
     auto stdName = jni::make_local(name)->toStdString();
 
@@ -159,7 +159,7 @@ static jni::local_ref<jobject> JSIValueToJavaObject(jsi::Runtime &rt,
 
 
 void JsiBridge::installJSIBindings() {
-    __android_log_print(ANDROID_LOG_VERBOSE, "😇", "installJSIBindings");
+    __android_log_print(ANDROID_LOG_DEBUG, "😇", "installJSIBindings");
 
     auto registerCallback = jsi::Function::createFromHostFunction(
             *runtime_,
@@ -173,7 +173,7 @@ void JsiBridge::installJSIBindings() {
 
                 auto name = args[0].asString(runtime).utf8(runtime);
 
-                __android_log_print(ANDROID_LOG_VERBOSE, "😇", "registerCallback %s", name.c_str());
+                __android_log_print(ANDROID_LOG_DEBUG, "😇", "registerCallback %s", name.c_str());
 
                 auto callback = args[1].asObject(runtime).asFunction(runtime);
                 jsListeners_[name] = std::make_shared<jsi::Function>(std::move(callback));
@@ -191,7 +191,7 @@ void JsiBridge::installJSIBindings() {
 
                 auto name = args[0].asString(runtime).utf8(runtime);
 
-                __android_log_print(ANDROID_LOG_VERBOSE, "😇", "removeCallback %s", name.c_str());
+                __android_log_print(ANDROID_LOG_DEBUG, "😇", "removeCallback %s", name.c_str());
 
                 jsListeners_.erase(name);
                 return jsi::Value::undefined();
@@ -212,7 +212,7 @@ void JsiBridge::installJSIBindings() {
 
                 auto localData = JSIValueToJavaObject(runtime, args[1]);
 
-                __android_log_print(ANDROID_LOG_VERBOSE, "😇", "emit %s", name.c_str());
+                __android_log_print(ANDROID_LOG_DEBUG, "😇", "emit %s", name.c_str());
 
                 auto method = javaPart_->getClass()->getMethod<void(jni::local_ref<jstring>,
                                                                     jni::local_ref<jobject>)>(
