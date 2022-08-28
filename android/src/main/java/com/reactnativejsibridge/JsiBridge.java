@@ -67,10 +67,6 @@ public class JsiBridge {
     @DoNotStrip
     @SuppressWarnings("unused")
     private void emitNative(final String name, final Object data) {
-        emitNativeImpl(name, data);
-    }
-
-    private void emitNativeImpl(final String name, final Object data) {
         JsiBridgeCallback jsiBridgeCallback = nativeListeners.get(name);
         if (jsiBridgeCallback == null) return;
         handler.post(new Runnable() {
@@ -95,7 +91,7 @@ public class JsiBridge {
 
     private native HybridData initHybrid(long jsContext, CallInvokerHolderImpl jsCallInvokerHolder);
 
-    public interface JsiBridgeCallback {
-        void onJsEvent(Object data);
+    public interface JsiBridgeCallback<T> {
+        void onJsEvent(T data);
     }
 }
