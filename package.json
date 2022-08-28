@@ -1,6 +1,6 @@
 {
   "name": "@ncuhomeclub/jsi-bridge",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "React Native JSI library for communicate between js and native code via jsi",
   "main": "src/index",
   "module": "src/index",
