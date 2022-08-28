@@ -86,7 +86,6 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
     _jsiBridge.setProperty(runtime, "registerCallback", std::move(registerCallback));
     _jsiBridge.setProperty(runtime, "removeCallback", std::move(removeCallback));
     _jsiBridge.setProperty(runtime, "emit", std::move(emit));
-    _jsiBridge.setProperty(runtime, "js", std::move(emit));
     runtime.global().setProperty(runtime, "_JsiBridge", std::move(_jsiBridge));
     
     return @true;

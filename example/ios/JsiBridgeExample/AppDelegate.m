@@ -51,7 +51,7 @@ static void InitializeFlipper(UIApplication *application) {
   [self.window makeKeyAndVisible];
   
   [[JsiBridgeEmitter shared] on:@"jsData" with:^(NSDictionary *data) {
-    NSLog(@"😃jsD %@", (NSString *)[data objectForKey:@"user"]);
+    NSLog(@"😃jsData %@", (NSString *)[data objectForKey:@"user"]);
     
     [[JsiBridgeEmitter shared] emit:@"onData" with:@{@"xjp": @"2333"}];
   }];
