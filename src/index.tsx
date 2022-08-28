@@ -30,7 +30,7 @@ export class JsiBridge {
     global._JsiBridge.removeCallback(name);
   }
 
-  static emit(name: string, data: any) {
+  static emit(name: string, data?: any) {
     //@ts-ignore
     global._JsiBridge.emit(name, data);
   }

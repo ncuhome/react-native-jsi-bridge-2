@@ -11,28 +11,28 @@ import com.facebook.react.module.annotations.ReactModule;
 
 @ReactModule(name = JsiBridgeModule.NAME)
 public class JsiBridgeModule extends ReactContextBaseJavaModule {
-  public static final String NAME = "JsiBridge";
+    public static final String NAME = "JsiBridge";
 
-  public JsiBridgeModule(ReactApplicationContext reactContext) {
-    super(reactContext);
-  }
-
-  @Override
-  @NonNull
-  public String getName() {
-    return NAME;
-  }
-
-
-  // Example method
-  // See https://reactnative.dev/docs/native-modules-android
-  @ReactMethod(isBlockingSynchronousMethod = true)
-  public void install() {
-    try {
-      System.loadLibrary("jsiBridge");
-      JsiBridge.instance.install(getReactApplicationContext());
-    } catch (Exception exception) {
-      Log.e(NAME, "Failed to install JSI Bindings!", exception);
+    public JsiBridgeModule(ReactApplicationContext reactContext) {
+        super(reactContext);
     }
-  }
+
+    @Override
+    @NonNull
+    public String getName() {
+        return NAME;
+    }
+
+
+    // Example method
+    // See https://reactnative.dev/docs/native-modules-android
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    public void install() {
+        try {
+            System.loadLibrary("jsiBridge");
+            JsiBridge.instance.install(getReactApplicationContext());
+        } catch (Exception exception) {
+            Log.e(NAME, "Failed to install JSI Bindings!", exception);
+        }
+    }
 }

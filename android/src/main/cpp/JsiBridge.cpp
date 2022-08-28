@@ -26,8 +26,16 @@ void JsiBridge::registerNatives() {
                                             JsiBridge::initHybrid),
                            makeNativeMethod("installJSIBindings",
                                             JsiBridge::installJSIBindings),
-                           makeNativeMethod("emitJs",
-                                            JsiBridge::emitJs),
+                           makeNativeMethod("emitJsStr",
+                                            JsiBridge::emitJsStr),
+                           makeNativeMethod("emitJsBool",
+                                            JsiBridge::emitJsBool),
+                           makeNativeMethod("emitJsNum",
+                                            JsiBridge::emitJsNum),
+                           makeNativeMethod("emitJsObj",
+                                            JsiBridge::emitJsObj),
+                           makeNativeMethod("emitJsNull",
+                                            JsiBridge::emitJsNull),
                    });
 }
 
@@ -51,18 +59,104 @@ TSelf JsiBridge::initHybrid(
     return makeCxxInstance(jThis, (jsi::Runtime *) jsContext, jsCallInvoker);
 }
 
-void JsiBridge::emitJs(jstring name, jstring data) {
+void JsiBridge::emitJsStr(jstring name, jstring data) {
     __android_log_print(ANDROID_LOG_VERBOSE, "😇", "emit");
 
     auto stdName = jni::make_local(name)->toStdString();
-    auto stdData = jni::make_local(data)->toStdString();
 
     if (jsListeners_.find(stdName) != jsListeners_.end()) {
+        auto stdData = jni::make_local((jstring)data)->toStdString();
         jsCallInvoker_->invokeAsync([=, d = stdData]() {
-            jsListeners_[stdName]->call(*runtime_,jsi::String::createFromUtf8(*runtime_, d));
+            jsListeners_[stdName]->call(*runtime_, jsi::String::createFromUtf8(*runtime_, d));
         });
     }
 }
+
+void JsiBridge::emitJsBool(jstring name, jboolean data) {
+    __android_log_print(ANDROID_LOG_VERBOSE, "😇", "emit");
+
+    auto stdName = jni::make_local(name)->toStdString();
+
+    if (jsListeners_.find(stdName) != jsListeners_.end()) {
+        jsCallInvoker_->invokeAsync([=, d = data]() {
+            jsListeners_[stdName]->call(*runtime_, jsi::Value(static_cast<bool>(d)));
+        });
+    }
+}
+
+void JsiBridge::emitJsNum(jstring name, jdouble data) {
+    __android_log_print(ANDROID_LOG_VERBOSE, "😇", "emit");
+
+    auto stdName = jni::make_local(name)->toStdString();
+
+    if (jsListeners_.find(stdName) != jsListeners_.end()) {
+        jsCallInvoker_->invokeAsync([=, d = data]() {
+            jsListeners_[stdName]->call(*runtime_, jsi::Value(static_cast<double>(d)));
+        });
+    }
+}
+
+void JsiBridge::emitJsObj(jstring name, jobject data, jboolean isArray) {
+    __android_log_print(ANDROID_LOG_VERBOSE, "😇", "emit");
+
+    auto stdName = jni::make_local(name)->toStdString();
+
+    if (jsListeners_.find(stdName) != jsListeners_.end()) {
+
+        auto global_ref = jni::make_global(data);
+
+        if (static_cast<bool>(isArray)) {
+            auto arr = jni::static_ref_cast<react::NativeArray::jhybridobject>(global_ref);
+            jsCallInvoker_->invokeAsync([=]() {
+                auto arrVal = jsi::valueFromDynamic(*runtime_, arr->cthis()->consume());
+                jsListeners_[stdName]->call(*runtime_, std::move(arrVal));
+            });
+        } else {
+           auto obj = jni::static_ref_cast<react::NativeMap::jhybridobject>(global_ref);
+            jsCallInvoker_->invokeAsync([=]() {
+                auto objVal = jsi::valueFromDynamic(*runtime_, obj->cthis()->consume());
+                jsListeners_[stdName]->call(*runtime_, std::move(objVal));
+            });
+        }
+
+        global_ref.release();
+    }
+}
+
+void JsiBridge::emitJsNull(jstring name) {
+    __android_log_print(ANDROID_LOG_VERBOSE, "😇", "emit");
+
+    auto stdName = jni::make_local(name)->toStdString();
+
+    if (jsListeners_.find(stdName) != jsListeners_.end()) {
+        jsCallInvoker_->invokeAsync([=]() {
+            jsListeners_[stdName]->call(*runtime_, jsi::Value::undefined());
+        });
+    }
+}
+
+static jni::local_ref<jobject> JSIValueToJavaObject(jsi::Runtime &rt,
+                                                    const jsi::Value &value) {
+    if (value.isUndefined() || value.isNull()) {
+        return nullptr;
+    } else if (value.isBool()) {
+        return JBoolean::valueOf(value.getBool());
+    } else if (value.isNumber()) {
+        return jni::autobox(value.asNumber());
+    } else if (value.isString()) {
+        return jni::make_jstring(value.asString(rt).utf8(rt));
+    } else if (value.isObject()) {
+        if (value.asObject(rt).isArray(rt)) {
+            return react::ReadableNativeArray::newObjectCxxArgs(
+                    jsi::dynamicFromValue(rt, value));
+        } else {
+            return react::ReadableNativeMap::newObjectCxxArgs(
+                    jsi::dynamicFromValue(rt, value));
+        }
+    }
+    throw std::runtime_error("Unsupported jsi::Value kind");
+}
+
 
 void JsiBridge::installJSIBindings() {
     __android_log_print(ANDROID_LOG_VERBOSE, "😇", "installJSIBindings");
@@ -114,18 +208,19 @@ void JsiBridge::installJSIBindings() {
                 size_t count) -> jsi::Value {
 
                 auto name = args[0].asString(runtime).utf8(runtime);
-                auto data = args[1].asString(runtime).utf8(runtime);
-                auto localData = jni::make_jstring(data);
                 auto localName = jni::make_jstring(name);
+
+                auto localData = JSIValueToJavaObject(runtime, args[1]);
 
                 __android_log_print(ANDROID_LOG_VERBOSE, "😇", "emit %s", name.c_str());
 
-                auto method = javaPart_->getClass()->getMethod<void(jni::local_ref<jstring>, jni::local_ref<jstring>)>(
+                auto method = javaPart_->getClass()->getMethod<void(jni::local_ref<jstring>,
+                                                                    jni::local_ref<jobject>)>(
                         "emitNative");
                 method(javaPart_.get(), localName, localData);
+
                 return jsi::Value::undefined();
             });
-
 
 
     jsi::Object _jsiBridge = jsi::Object(*runtime_);

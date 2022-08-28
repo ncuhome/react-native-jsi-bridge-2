@@ -1,6 +1,7 @@
 package com.example.reactnativejsibridge;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.facebook.react.ReactActivity;
 import com.reactnativejsibridge.JsiBridge;
@@ -22,8 +23,13 @@ public class MainActivity extends ReactActivity {
 
     JsiBridge.off("jsData");
     JsiBridge.on("jsData", data -> {
-      System.out.println("😃 jsData " + data);
-      JsiBridge.emit("onData", "{\"name\": \"Sergei2\"}");
+      JsiBridge.emit("onData", data);
     });
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    JsiBridge.off("jsData");
   }
 }
