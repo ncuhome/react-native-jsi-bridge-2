@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { JsiBridge } from 'react-native-jsi-bridge';
+import { JsiBridge } from '@ncuhomeclub/jsi-bridge';
 
 const Btn = ({ children, onPress }: any) => {
   return (

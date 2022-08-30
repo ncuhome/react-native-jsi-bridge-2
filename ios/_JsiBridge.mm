@@ -92,7 +92,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
 }
 
 - (void)emitJs:(NSString *)name with:(id)data {
-    auto stdName = [name UTF8String];
+    auto stdName = std::string([name UTF8String]);
     if (jsListeners_.find(stdName) != jsListeners_.end()) {
         auto& runtime = *jsBridge_runtime;
         jsBridge_bridge.jsCallInvoker->invokeAsync([&runtime, n = stdName, d = data] () {

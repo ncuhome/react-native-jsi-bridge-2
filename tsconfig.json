@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "react-native-jsi-bridge": ["./src/index"]
+      "@ncuhomeclub/jsi-bridge": ["./src/index"]
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
