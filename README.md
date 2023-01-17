@@ -1,20 +1,20 @@
-# @ncuhomeclub/jsi-birdge
+# @ncuhomeclub/jsi-bridge
 
 React Native JSI library for communicate between js and native code via jsi skipping the react-native bridge which improve performance and skips data serialization/deserialization.
 
 ## Installation
 
 ```sh
-yarn add @ncuhomeclub/jsi-birdge
+yarn add @ncuhomeclub/jsi-bridge
 # and npx pod-install
 ```
 
 ## Usage JS
 
-on js side just import `import { JsiBridge } from '@ncuhomeclub/jsi-birdge'`
+on js side just import `import { JsiBridge } from '@ncuhomeclub/jsi-bridge'`
 and subscribe on events which will be fired from native code.
 ```typescript
-import { JsiBridge } from '@ncuhomeclub/jsi-birdge';
+import { JsiBridge } from '@ncuhomeclub/jsi-bridge';
 
 // for subscribe
 JsiBridge.on('eventNameInJsCode', (data: any) => {
