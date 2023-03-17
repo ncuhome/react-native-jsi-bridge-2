@@ -1,6 +1,6 @@
 {
   "name": "react-native-jsi-bridge-2",
-  "version": "0.9.3",
+  "version": "1.0.0",
   "description": "React Native JSI library for communicate between js and native code via jsi",
   "main": "src/index",
   "module": "src/index",
