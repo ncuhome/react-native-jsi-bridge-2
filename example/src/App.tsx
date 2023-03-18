@@ -1,11 +1,36 @@
+/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { JsiBridge } from '@ncuhomeclub/jsi-bridge';
+import {
+  StyleSheet,
+  View,
+  Text as RNText,
+  TouchableOpacity,
+  useColorScheme,
+  TextProps,
+} from 'react-native';
+import { JsiBridge } from 'react-native-jsi-bridge-2';
+
+const Text = ({ style, ...rest }: TextProps) => {
+  const isDark = useColorScheme() === 'dark';
+
+  return (
+    <RNText {...rest} style={[style, { color: isDark ? '#fff' : '#111' }]} />
+  );
+};
 
 const Btn = ({ children, onPress }: any) => {
+  const isDark = useColorScheme() === 'dark';
   return (
-    <TouchableOpacity onPress={onPress} style={styles.btn}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[
+        styles.btn,
+        {
+          borderColor: isDark ? '#fff' : '#111',
+        },
+      ]}
+    >
       <Text>{children}</Text>
     </TouchableOpacity>
   );
@@ -15,6 +40,8 @@ const rand = Math.random;
 
 export default function App() {
   const [result, setResult] = React.useState<string | undefined>();
+
+  const isDark = useColorScheme() === 'dark';
 
   React.useEffect(() => {
     JsiBridge.on('onData', (data: any) => {
@@ -32,12 +59,20 @@ export default function App() {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          backgroundColor: isDark ? '#111' : '#fff',
+        },
+      ]}
+    >
       <Text
         style={{
           marginBottom: 24,
           fontSize: 20,
           padding: 24,
+          color: isDark ? '#fff' : '#111',
         }}
       >
         Result: {String(result)}

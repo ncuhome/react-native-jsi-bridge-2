@@ -1,6 +1,6 @@
 {
-  "name": "@ncuhomeclub/jsi-bridge",
-  "version": "0.9.3",
+  "name": "react-native-jsi-bridge-2",
+  "version": "1.0.0",
   "description": "React Native JSI library for communicate between js and native code via jsi",
   "main": "src/index",
   "module": "src/index",
@@ -12,7 +12,7 @@
     "android",
     "ios",
     "cpp",
-    "react-native-jsi-bridge.podspec",
+    "react-native-jsi-bridge-2.podspec",
     "!lib/typescript/example",
     "!android/build",
     "!android/.cxx",
@@ -34,13 +34,13 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/ncuhome/react-native-jsi-bridge",
+  "repository": "https://github.com/ncuhome/react-native-jsi-bridge-2",
   "author": "ncuhome <develop@ncuhome.club> (https://github.com/ncuhome)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ncuhome/react-native-jsi-bridge/issues"
+    "url": "https://github.com/ncuhome/react-native-jsi-bridge-2/issues"
   },
-  "homepage": "https://github.com/ncuhome/react-native-jsi-bridge#readme",
+  "homepage": "https://github.com/ncuhome/react-native-jsi-bridge-2#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

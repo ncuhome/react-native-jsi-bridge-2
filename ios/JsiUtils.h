@@ -10,6 +10,7 @@
 
 #include <jsi/jsi.h>
 #import <ReactCommon/CallInvoker.h>
+#import <ReactCommon/CallbackWrapper.h>
 
 using namespace facebook;
 using namespace facebook::react;
