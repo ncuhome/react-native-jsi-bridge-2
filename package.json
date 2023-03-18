@@ -34,13 +34,13 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com/ncuhome/react-native-jsi-bridge",
+  "repository": "https://github.com/ncuhome/react-native-jsi-bridge-2",
   "author": "ncuhome <develop@ncuhome.club> (https://github.com/ncuhome)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ncuhome/react-native-jsi-bridge/issues"
+    "url": "https://github.com/ncuhome/react-native-jsi-bridge-2/issues"
   },
-  "homepage": "https://github.com/ncuhome/react-native-jsi-bridge#readme",
+  "homepage": "https://github.com/ncuhome/react-native-jsi-bridge-2#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

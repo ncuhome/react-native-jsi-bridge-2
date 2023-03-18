@@ -2,6 +2,11 @@
 
 React Native JSI library for communicate between js and native code via jsi skipping the react-native bridge which improve performance and skips data serialization/deserialization.
 
+Based on [sergeymild/react-native-jsi-bridge](https://github.com/sergeymild/react-native-jsi-bridge), fixed build on RN 0.71.x and support bridging any JS types.
+
+## Prerequisite
+
+react-native >= 0.71
 
 ## Installation
 
