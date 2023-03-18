@@ -7,28 +7,27 @@ set (CMAKE_CXX_FLAGS "-DFOLLY_NO_CONFIG=1 -DFOLLY_HAVE_CLOCK_GETTIME=1 -DFOLLY_H
 set (PACKAGE_NAME "jsiBridge")
 
 add_library(
-        ${PACKAGE_NAME}
-        SHARED
-        src/main/cpp/JsiBridge.cpp
+    ${PACKAGE_NAME}
+    SHARED
+    src/main/cpp/JsiBridge.cpp
 )
-
-# linking
 
 find_package(ReactAndroid REQUIRED CONFIG)
 
 find_package(fbjni REQUIRED CONFIG)
 
+# linking
+
 message(WARNING "jsiBridge linking")
 
 target_link_libraries(
-  ${PACKAGE_NAME}
-  ReactAndroid::jsi
-  ReactAndroid::react_nativemodule_core
-  fbjni::fbjni
-  ReactAndroid::folly_runtime
-  ReactAndroid::hermes_executor
-  ReactAndroid::turbomodulejsijni
-  ReactAndroid::reactnativejni
-  log
-  android
+    ${PACKAGE_NAME}
+    ReactAndroid::jsi # jsi/
+    ReactAndroid::react_nativemodule_core # ReactCommon/
+    ReactAndroid::turbomodulejsijni # ReactCommon/
+    ReactAndroid::folly_runtime # folly/
+    ReactAndroid::reactnativejni # cxxreact/
+    fbjni::fbjni # fbjni/
+    log
+    android
 )

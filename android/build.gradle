@@ -88,10 +88,15 @@ android {
   }
   packagingOptions {
     doNotStrip resolveBuildType() == 'debug' ? "**/**/*.so" : ''
-    excludes = ["**/libc++_shared.so", "**/libfbjni.so", "**/libjsi.so", "**/libreactnativejni.so", "**/libfolly_json.so", "**/libjscexecutor.so", "**/libhermes.so", "**/libfolly_runtime.so",
+    excludes = [
+      "**/libc++_shared.so",
+      "**/libfbjni.so",
+       "**/libjsi.so",
+      "**/libreactnativejni.so",
+      "**/libfolly_json.so",
+      "**/libfolly_runtime.so",
       "**/libreact_nativemodule_core.so",
       "**/libturbomodulejsijni.so"
-
     ]
   }
 }
