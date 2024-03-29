@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
-
+import { NativeModules, Platform } from 'react-native';
 import {
   StyleSheet,
   View,
@@ -9,7 +9,43 @@ import {
   useColorScheme,
   TextProps,
 } from 'react-native';
-import { JsiBridge } from 'react-native-jsi-bridge-2';
+
+const LINKING_ERROR =
+  `The package 'react-native-jsi-bridge-2' doesn't seem to be linked. Make sure: \n\n` +
+  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
+  '- You rebuilt the app after installing the package\n' +
+  '- You are not using Expo managed workflow\n';
+
+const _JsiBridge = NativeModules.CustomJsiBridge
+  ? NativeModules.CustomJsiBridge
+  : new Proxy(
+      {},
+      {
+        get() {
+          throw new Error(LINKING_ERROR);
+        },
+      }
+    );
+
+_JsiBridge.install();
+
+export class JsiBridge {
+  static on(name: string, callback: (data: any) => void) {
+    //@ts-ignore
+    global._CustomJsiBridge.registerCallback(name, callback);
+  }
+
+  static off(name: string) {
+    //@ts-ignore
+    global._CustomJsiBridge.removeCallback(name);
+  }
+
+  static emit(name: string, data?: any) {
+    //@ts-ignore
+    global._CustomJsiBridge.emit(name, data);
+  }
+}
+
 
 const Text = ({ style, ...rest }: TextProps) => {
   const isDark = useColorScheme() === 'dark';

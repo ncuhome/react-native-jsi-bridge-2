@@ -13,21 +13,21 @@
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
-  [[JsiBridgeEmitter shared] on:@"jsData" with:^(NSDictionary *data) {
+  [[CustomJsiBridgeEmitter shared] on:@"jsData" with:^(NSDictionary *data) {
     NSLog(@"😃jsData %@", (NSString *)[data objectForKey:@"user"]);
 
-    [[JsiBridgeEmitter shared] emit:@"onData" with:data];
+    [[CustomJsiBridgeEmitter shared] emit:@"onData" with:data];
   }];
 
-  [[JsiBridgeEmitter shared] on:@"jsData" with:^(NSString *data) {
-    [[JsiBridgeEmitter shared] emit:@"onData" with:data];
+  [[CustomJsiBridgeEmitter shared] on:@"jsData" with:^(NSString *data) {
+    [[CustomJsiBridgeEmitter shared] emit:@"onData" with:data];
   }];
 
-  [[JsiBridgeEmitter shared] on:@"jsData" with:^(NSNumber *data) {
-    [[JsiBridgeEmitter shared] emit:@"onData" with:data];
+  [[CustomJsiBridgeEmitter shared] on:@"jsData" with:^(NSNumber *data) {
+    [[CustomJsiBridgeEmitter shared] emit:@"onData" with:data];
   }];
 
-  [[JsiBridgeEmitter shared] off:@""];
+  [[CustomJsiBridgeEmitter shared] off:@""];
 
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
