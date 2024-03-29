@@ -6,8 +6,9 @@ Based on [sergeymild/react-native-jsi-bridge](https://github.com/sergeymild/reac
 
 ## Prerequisite
 
-react-native >= 0.71
-if you use react-native >= 0.72, please download package version 1.1.0 
+react-native >= 0.73
+
+It you are using lower version of RN, please download package version 1.0.0
 
 ## Installation
 
