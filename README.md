@@ -20,7 +20,7 @@ yarn add react-native-jsi-bridge-2
 on js side just import `import { JsiBridge } from 'react-native-jsi-bridge-2'`
 and subscribe on events which will be fired from native code.
 ```typescript
-import { JsiBridge } from 'react-native-jsi-bridge-2';
+import { CustomJsiBridge as JsiBridge } from 'react-native-jsi-bridge-2';
 
 // for subscribe
 JsiBridge.on('eventNameInJsCode', (data: any) => {
@@ -61,15 +61,15 @@ On native side
 #import "JsiBridgeEmitter.h"
 
 // for subscribe
-[[JsiBridgeEmitter shared] on:@"eventNameInNativeCode" with:^(id data) {
+[[CustomJsiBridgeEmitter shared] on:@"eventNameInNativeCode" with:^(id data) {
   // some logic
 }];
 
 // for unsubscribe
-[[JsiBridgeEmitter shared] off:@"eventNameInNativeCode"];
+[[CustomJsiBridgeEmitter shared] off:@"eventNameInNativeCode"];
 
 // send event to js code
-[[JsiBridgeEmitter shared] emit:@"eventNameInJsCode" with:@"data"];
+[[CustomJsiBridgeEmitter shared] emit:@"eventNameInJsCode" with:@"data"];
 ```
 
 ## License
