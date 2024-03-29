@@ -6,10 +6,9 @@ import {
   Text as RNText,
   TouchableOpacity,
   useColorScheme,
-  TextProps,
 } from 'react-native';
 import { JsiBridge } from 'react-native-jsi-bridge-2';
-const Text = ({ style, ...rest }: TextProps) => {
+const Text = ({ style, ...rest }: any) => {
   const isDark = useColorScheme() === 'dark';
 
   return (
