@@ -9,25 +9,25 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   self.moduleName = @"JsiBridge2Example";
-  // You can add your custom initial props in the dictionary below.
+  // You can add your  initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
 
-  [[CustomJsiBridgeEmitter shared] on:@"jsData" with:^(NSDictionary *data) {
+  [[JsiBridgeEmitter shared] on:@"jsData" with:^(NSDictionary *data) {
     NSLog(@"😃jsData %@", (NSString *)[data objectForKey:@"user"]);
 
-    [[CustomJsiBridgeEmitter shared] emit:@"onData" with:data];
+    [[JsiBridgeEmitter shared] emit:@"onData" with:data];
   }];
 
-  [[CustomJsiBridgeEmitter shared] on:@"jsData" with:^(NSString *data) {
-    [[CustomJsiBridgeEmitter shared] emit:@"onData" with:data];
+  [[JsiBridgeEmitter shared] on:@"jsData" with:^(NSString *data) {
+    [[JsiBridgeEmitter shared] emit:@"onData" with:data];
   }];
 
-  [[CustomJsiBridgeEmitter shared] on:@"jsData" with:^(NSNumber *data) {
-    [[CustomJsiBridgeEmitter shared] emit:@"onData" with:data];
+  [[JsiBridgeEmitter shared] on:@"jsData" with:^(NSNumber *data) {
+    [[JsiBridgeEmitter shared] emit:@"onData" with:data];
   }];
 
-  [[CustomJsiBridgeEmitter shared] off:@""];
+  [[JsiBridgeEmitter shared] off:@""];
 
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }

@@ -8,13 +8,13 @@
 
 #import "JsiBridgeEmitter.h"
 
-@implementation CustomJsiBridgeEmitter
+@implementation JsiBridgeEmitter
 
-NSMutableDictionary<NSString*, CustomJsiBridgeCallback> *_nativeListeners;
-__weak CustomJsiBridge *jsiBridge;
+NSMutableDictionary<NSString*, JsiBridgeCallback> *_nativeListeners;
+__weak JsiBridge *jsiBridge;
 
-+ (CustomJsiBridgeEmitter*)shared {
-    static CustomJsiBridgeEmitter *_shared = nil;
++ (JsiBridgeEmitter*)shared {
+    static JsiBridgeEmitter *_shared = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _shared = [[self alloc] init];
@@ -29,7 +29,7 @@ __weak CustomJsiBridge *jsiBridge;
     return self;
 }
 
-- (void)on:(NSString *)name with:(CustomJsiBridgeCallback)callback {
+- (void)on:(NSString *)name with:(JsiBridgeCallback)callback {
     [_nativeListeners setObject:callback forKey:name];
 }
 
@@ -45,7 +45,7 @@ __weak CustomJsiBridge *jsiBridge;
 
 - (void)emitNative:(NSString *)name with:(id)data {
     dispatch_async(dispatch_get_main_queue(), ^{
-        CustomJsiBridgeCallback listener = [_nativeListeners objectForKey:name];
+        JsiBridgeCallback listener = [_nativeListeners objectForKey:name];
         if (listener) {
             @try {
                 listener(data);
@@ -61,7 +61,7 @@ __weak CustomJsiBridge *jsiBridge;
     });
 }
 
-- (void)registerJsiBridge:(CustomJsiBridge *)bridge {
+- (void)registerJsiBridge:(JsiBridge *)bridge {
     jsiBridge = bridge;
 }
 

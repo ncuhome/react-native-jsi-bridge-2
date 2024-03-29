@@ -6,8 +6,8 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo managed workflow\n';
 
-const _CustomJsiBridge = NativeModules.CustomJsiBridge
-  ? NativeModules.CustomJsiBridge
+const _JsiBridge = NativeModules.JsiBridge
+  ? NativeModules.JsiBridge
   : new Proxy(
       {},
       {
@@ -17,21 +17,21 @@ const _CustomJsiBridge = NativeModules.CustomJsiBridge
       }
     );
 
-_CustomJsiBridge.install();
+_JsiBridge.install();
 
-export class CustomJsiBridge {
+export class JsiBridge {
   static on(name: string, callback: (data: any) => void) {
     //@ts-ignore
-    global._CustomJsiBridge.registerCallback(name, callback);
+    global._JsiBridge.registerCallback(name, callback);
   }
 
   static off(name: string) {
     //@ts-ignore
-    global._CustomJsiBridge.removeCallback(name);
+    global._JsiBridge.removeCallback(name);
   }
 
   static emit(name: string, data?: any) {
     //@ts-ignore
-    global._CustomJsiBridge.emit(name, data);
+    global._JsiBridge.emit(name, data);
   }
 }

@@ -49,7 +49,7 @@ typedef void(^PureBlockType)(void);
 
 #pragma mark - Objc to JSI
 
-namespace CustomJsiBridgeTurboModuleConvertUtils {
+namespace JsiBridgeTurboModuleConvertUtils {
 
 static jsi::Value convertNSNumberToJSIBoolean(jsi::Runtime &runtime, NSNumber *value)
 {
