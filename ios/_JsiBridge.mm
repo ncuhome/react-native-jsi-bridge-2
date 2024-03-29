@@ -2,7 +2,7 @@
 #import <React/RCTBridge+Private.h>
 #import <ReactCommon/RCTTurboModule.h>
 #import <jsi/jsi.h>
-#import "JsiBridgeEmitter.mm"
+#import "JsiBridgeEmitter.h"
 #import "JsiUtils.h"
 
 #include "iostream"
@@ -10,7 +10,7 @@
 
 using namespace facebook;
 
-@implementation JsiBridge
+@implementation CustomJsiBridge
 
 RCT_EXPORT_MODULE()
 
@@ -21,7 +21,7 @@ RCTBridge *jsBridge_bridge;
 jsi::Runtime *jsBridge_runtime;
 
 RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
-    NSLog(@"Installing JsiBridge polyfill Bindings...");
+    NSLog(@"Installing CustomJsiBridge polyfill Bindings...");
     jsBridge_bridge = [RCTBridge currentBridge];
     jsBridge_cxxBridge = (RCTCxxBridge*)jsBridge_bridge;
     if (jsBridge_cxxBridge == nil) return @false;
@@ -29,7 +29,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
     if (jsBridge_runtime == nil) return @false;
     auto& runtime = *jsBridge_runtime;
     
-    [JsiBridgeEmitter.shared registerJsiBridge:self];
+    [CustomJsiBridgeEmitter.shared registerJsiBridge:self];
     
     auto registerCallback = jsi::Function::createFromHostFunction(runtime,
                                                                   jsi::PropNameID::forUtf8(runtime, "registerCallback"),
@@ -73,11 +73,11 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
                                                           size_t count) -> jsi::Value {
         
         auto name = args[0].asString(runtime).utf8(runtime);
-        id data = convertJSIValueToObjCObject(runtime, args[1], jsBridge_bridge.jsCallInvoker, nil);
+      id data = CustomJsiBridgeTurboModuleConvertUtils::convertJSIValueToObjCObject(runtime, args[1], jsBridge_bridge.jsCallInvoker);
         
         auto nameString = [NSString stringWithUTF8String:name.c_str()];
         
-        [JsiBridgeEmitter.shared emitNative:nameString with:data];
+        [CustomJsiBridgeEmitter.shared emitNative:nameString with:data];
         return jsi::Value::undefined();
     });
     
@@ -86,7 +86,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
     _jsiBridge.setProperty(runtime, "registerCallback", std::move(registerCallback));
     _jsiBridge.setProperty(runtime, "removeCallback", std::move(removeCallback));
     _jsiBridge.setProperty(runtime, "emit", std::move(emit));
-    runtime.global().setProperty(runtime, "_JsiBridge", std::move(_jsiBridge));
+    runtime.global().setProperty(runtime, "_CustomJsiBridge", std::move(_jsiBridge));
     
     return @true;
 }
@@ -96,7 +96,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
     if (jsListeners_.find(stdName) != jsListeners_.end()) {
         auto& runtime = *jsBridge_runtime;
         jsBridge_bridge.jsCallInvoker->invokeAsync([&runtime, n = stdName, d = data] () {
-            auto dd = convertObjCObjectToJSIValue(runtime, d);
+            auto dd = CustomJsiBridgeTurboModuleConvertUtils::convertObjCObjectToJSIValue(runtime, d);
             jsListeners_[n]->call(runtime, std::move(dd));
         });
     }
