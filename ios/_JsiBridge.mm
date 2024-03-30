@@ -2,7 +2,7 @@
 #import <React/RCTBridge+Private.h>
 #import <ReactCommon/RCTTurboModule.h>
 #import <jsi/jsi.h>
-#import "JsiBridgeEmitter.mm"
+#import "JsiBridgeEmitter.h"
 #import "JsiUtils.h"
 
 #include "iostream"
@@ -73,7 +73,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
                                                           size_t count) -> jsi::Value {
         
         auto name = args[0].asString(runtime).utf8(runtime);
-        id data = convertJSIValueToObjCObject(runtime, args[1], jsBridge_bridge.jsCallInvoker, nil);
+      id data = JsiBridgeTurboModuleConvertUtils::convertJSIValueToObjCObject(runtime, args[1], jsBridge_bridge.jsCallInvoker);
         
         auto nameString = [NSString stringWithUTF8String:name.c_str()];
         
@@ -96,7 +96,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
     if (jsListeners_.find(stdName) != jsListeners_.end()) {
         auto& runtime = *jsBridge_runtime;
         jsBridge_bridge.jsCallInvoker->invokeAsync([&runtime, n = stdName, d = data] () {
-            auto dd = convertObjCObjectToJSIValue(runtime, d);
+            auto dd = JsiBridgeTurboModuleConvertUtils::convertObjCObjectToJSIValue(runtime, d);
             jsListeners_[n]->call(runtime, std::move(dd));
         });
     }
