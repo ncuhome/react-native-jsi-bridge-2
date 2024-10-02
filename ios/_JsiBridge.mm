@@ -15,7 +15,7 @@ using namespace facebook;
 RCT_EXPORT_MODULE()
 
 // js registed events store
-std::map<std::string, std::shared_ptr<facebook::jsi::Function>> jsListeners_;
+std::map<jsi::Runtime*, std::map<std::string, std::shared_ptr<jsi::Function>>> runtimeMap_;
 RCTCxxBridge *jsBridge_cxxBridge;
 RCTBridge *jsBridge_bridge;
 jsi::Runtime *jsBridge_runtime;
@@ -44,7 +44,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
         std::cout<<"😀 addCallback " + name << std::endl;
 #endif
         auto callback = args[1].asObject(runtime).asFunction(runtime);
-        jsListeners_[name] = std::make_shared<jsi::Function>(std::move(callback));
+        runtimeMap_[&runtime][name] = std::make_shared<jsi::Function>(std::move(callback));
         return jsi::Value::undefined();
     });
     
@@ -60,7 +60,7 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
 #if DEBUG
         std::cout<<"😀 removecallback " + name << std::endl;
 #endif
-        jsListeners_.erase(name);
+        runtimeMap_[&runtime].erase(name);
         return jsi::Value::undefined();
     });
     
@@ -93,11 +93,12 @@ RCT_EXPORT_BLOCKING_SYNCHRONOUS_METHOD(install) {
 
 - (void)emitJs:(NSString *)name with:(id)data {
     auto stdName = std::string([name UTF8String]);
+    auto& runtime = *jsBridge_runtime;
+    auto jsListeners_ = runtimeMap_[&runtime];
     if (jsListeners_.find(stdName) != jsListeners_.end()) {
-        auto& runtime = *jsBridge_runtime;
         jsBridge_bridge.jsCallInvoker->invokeAsync([&runtime, n = stdName, d = data] () {
             auto dd = JsiBridgeTurboModuleConvertUtils::convertObjCObjectToJSIValue(runtime, d);
-            jsListeners_[n]->call(runtime, std::move(dd));
+            runtimeMap_[&runtime][n]->call(runtime, dd);
         });
     }
 }
